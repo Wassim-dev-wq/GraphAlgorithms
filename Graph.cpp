@@ -41,14 +41,6 @@ void Union(Sommet *s1, Sommet *s2)
     }
 }
 
-// /*trier les arêtes de G par poids croissant*/
-// void Graph::trieArretes(){
-//     Arete *ar;
-//     for(int i =1;i<nbArrets_;i++){
-//         ar = arrets_[i];
-
-//     }
-// }
 
 int partition(Arete **arr, int debut, int fin)
 {
