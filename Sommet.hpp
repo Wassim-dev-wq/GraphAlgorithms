@@ -10,7 +10,7 @@ class Sommet
 public:   
     Sommet* parent_;
     int rang_;        
-    Sommet(char* const etiquette,Sommet* parent = 0,int rank = 0); /* Sommet avec une étiquette */
+    Sommet(char* const etiquette,Sommet* parent = 0,int rang = 0); /* Sommet avec une étiquette */
     Sommet(const Sommet&); /* Sommet à partir d'un autre sommet (copie) */
     virtual ~Sommet();
     char* getEtiquette() const;

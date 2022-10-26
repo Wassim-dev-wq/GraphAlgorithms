@@ -12,7 +12,7 @@ private:
     int nbArrets_;     /* Nombre des arretes */
 public:
     Graph(Sommet **sommets, int nbSommet, Arete **arrets, int nbArrets);
-    Graph* kruskal();
+    void kruskal();
     void afficherSommets() const;
     int getSommePoids();
     void trieArretes();
