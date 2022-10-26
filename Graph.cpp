@@ -15,7 +15,7 @@ Sommet *find(Sommet *s)
 {
     if (s->parent_ != s)
     {
-        s->parent_ = find(s);
+        s->parent_ = find(s->parent_);
     }
     return s->parent_;
 }
@@ -41,27 +41,23 @@ void Union(Sommet *s1, Sommet *s2)
     }
 }
 
-
+/* https://www.geeksforgeeks.org/cpp-program-for-quicksort/ || Source algo*/
 int partition(Arete **arr, int debut, int fin)
 {
 
     int pivot = arr[debut]->getPoids();
 
     int count = 0;
-    for (int i = debut + 1; i <= fin; i++)
+    for (int i = debut + 1; i <= fin; ++i)
     {
-        cout << "i" << i<<"fin" << fin<< endl;
-        cout << "poids " << arr[i]->getPoids() << "pivot "<< pivot << "arr[i]" << arr[i]->premier_->getEtiquette() << endl;
-        if (arr[i]->getPoids() <= pivot){
-            cout<< count <<endl;
-            count++;}
-
+        if (arr[i]->getPoids() <= pivot)
+        {
+            count++;
+        }
     }
-    // Giving pivot element its correct position
     int pivotIndex = debut + count;
     swap(arr[pivotIndex], arr[debut]);
 
-    // Sorting left and right parts of the pivot element
     int i = debut, j = fin;
 
     while (i < pivotIndex && j > pivotIndex)
@@ -89,64 +85,66 @@ int partition(Arete **arr, int debut, int fin)
 void quickSort(Arete **arr, int debut, int fin)
 {
 
-    // base case
     if (debut >= fin)
         return;
 
-    // partitioning the array
-    int p = partition(arr, debut, fin);
+    int p = partition(arr, debut, fin - 1);
 
-    // Sorting the left part
     quickSort(arr, debut, p - 1);
 
-    // Sorting the right part
     quickSort(arr, p + 1, fin);
 }
 
-void Graph::kruskal()
+Graph *Graph::kruskal()
 {
-    // Sommet **s = new Sommet *[nbSommet_];
-    // Arete **arret = new Arete *[nbArrets_];
-    // int nbSommet_kruskal = 0;
-    // /* Init les parents de tous les sommets */
-    // for (int i = 0; i < nbSommet_; i++)
-    // {
-    //     initSommets(sommets_[i]);
-    // }
-    cout<<"avant"<<endl;
+    Sommet **s = new Sommet *[nbSommet_];
+    Arete **arret = new Arete *[nbArrets_];
+    int nbSommet_kruskal = 0;
+    /* Init les parents de tous les sommets */
+    for (int i = 0; i < nbSommet_; i++)
+        initSommets(sommets_[i]);
     quickSort(arrets_, 0, nbArrets_); /*trier les arêtes de G par poids croissant*/
-    cout<<"apres"<<endl;
-    // for (int i = 0; i < nbArrets_; i++)
-    // {
-    //     if (find(arret[i]->premier_) != find(arret[i]->deuxieme_))
-    //     {
-    //         arret[nbSommet_kruskal] = arret[i];
-    //         nbSommet_kruskal++;
-    //         // Union(arret[i]->premier_, arret[i]->deuxieme_);
-    //     }
-    // }
-    // for (int i = 0; i < nbSommet_; i++)
-    // {
-    //     s[i] = new Sommet((char *)0, 0, 0);
-    // }
-    //return new Graph(s,nbSommet_kruskal,arret,nbArrets_);
+
+    for (int i = 0; i < nbArrets_; i++)
+    {
+        if (find(arrets_[i]->premier_) != find(arrets_[i]->deuxieme_))
+        {
+            arret[nbSommet_kruskal] = arrets_[i];
+            nbSommet_kruskal++;
+            Union(arrets_[i]->premier_, arrets_[i]->deuxieme_);
+        }
+    }
+    for (int i = 0; i < nbSommet_; i++)
+        s[i] = new Sommet((char *)"1" /*i*/, 0, 0); /* i comme parametre pour creation des sommets [ MANQUE CAST int vers char*]*/
+    return new Graph(s, nbSommet_kruskal, arret, nbArrets_);
 }
 
 int Graph::getSommePoids()
 {
     int poids = 0;
     for (int i = 0; i < nbArrets_; i++)
-    {
         poids = poids + arrets_[i]->getPoids();
-    }
     return poids;
 }
 
 void Graph::afficherSommets() const
 {
     for (int i = 0; i < nbSommet_; i++)
-    {
         cout << sommets_[i]->getEtiquette() << endl;
+}
+
+void Graph::afficherGraph() const
+{
+    cout << "\nSommet: ";
+    for (int i = 0; i < nbSommet_; i++)
+        cout << sommets_[i]->getEtiquette() << " ";
+
+    cout << "\nArrets:" << endl;
+    for (int j = 0; j < nbArrets_; j++)
+    {   /*Check if etiquette not null "si null donc arrete boucle"*/
+        cout << (arrets_[j])->premier_->getEtiquette() << ", ";
+        cout << (arrets_[j])->poids_ << ", ";
+        cout << (arrets_[j])->deuxieme_->getEtiquette() << endl;
     }
 }
 
