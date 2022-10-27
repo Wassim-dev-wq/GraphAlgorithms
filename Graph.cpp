@@ -1,5 +1,6 @@
 #include "Graph.hpp"
 #include <iostream>
+#include <string.h>
 using namespace std;
 
 Graph::Graph(Sommet **sommets, int nb_sm, Arete **arrets, int nb_arr) : sommets_(sommets), nbSommet_(nb_sm), arrets_(arrets), nbArrets_(nb_arr) {}
@@ -99,7 +100,8 @@ Graph *Graph::kruskal()
 {
     Sommet **s = new Sommet *[nbSommet_];
     Arete **arret = new Arete *[nbArrets_];
-    int nbSommet_kruskal = 0;
+    int nbSommet_kruskal = 0; /* A CHANGER " DOIT ETRE ETIQUETTE */
+    int nbArrets_kruskal = 0;
     /* Init les parents de tous les sommets */
     for (int i = 0; i < nbSommet_; i++)
         initSommets(sommets_[i]);
@@ -112,11 +114,12 @@ Graph *Graph::kruskal()
             arret[nbSommet_kruskal] = arrets_[i];
             nbSommet_kruskal++;
             Union(arrets_[i]->premier_, arrets_[i]->deuxieme_);
+            nbArrets_kruskal++;
         }
     }
     for (int i = 0; i < nbSommet_; i++)
-        s[i] = new Sommet((char *)"1" /*i*/, 0, 0); /* i comme parametre pour creation des sommets [ MANQUE CAST int vers char*]*/
-    return new Graph(s, nbSommet_kruskal, arret, nbArrets_);
+        s[i] = new Sommet((char *)"1", 0, 0);/* creation des sommets a partir de les autres sommets*/
+    return new Graph(s, nbSommet_kruskal, arret,nbArrets_kruskal);
 }
 
 int Graph::getSommePoids()
@@ -139,13 +142,24 @@ void Graph::afficherGraph() const
     for (int i = 0; i < nbSommet_; i++)
         cout << sommets_[i]->getEtiquette() << " ";
 
-    cout << "\nArrets:" << endl;
+    cout << "\nArrets: " << nbArrets_ << endl;
     for (int j = 0; j < nbArrets_; j++)
-    {   /*Check if etiquette not null "si null donc arrete boucle"*/
+    {   
         cout << (arrets_[j])->premier_->getEtiquette() << ", ";
         cout << (arrets_[j])->poids_ << ", ";
         cout << (arrets_[j])->deuxieme_->getEtiquette() << endl;
     }
 }
 
-Graph::~Graph() {}
+Graph::~Graph(){
+    for(int i=0; i <nbSommet_;i++){
+        delete sommets_[i];
+        /*  [ERROOR] 0 Object deleted !!!!!!!!!! */
+        cout << "Destruction sommet : "<< sommets_[i]->getEtiquette() << endl;
+    }
+    for (int j = 0; j < nbArrets_; j++)
+    {
+        delete arrets_[j];
+    }
+    
+}
