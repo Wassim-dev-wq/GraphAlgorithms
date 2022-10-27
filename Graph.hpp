@@ -16,6 +16,7 @@ public:
     void afficherSommets() const;
     int getSommePoids();
     void afficherGraph() const;
+    void setnbSommets();
     ~Graph();
 
 };

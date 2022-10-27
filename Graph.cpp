@@ -5,6 +5,10 @@ using namespace std;
 
 Graph::Graph(Sommet **sommets, int nb_sm, Arete **arrets, int nb_arr) : sommets_(sommets), nbSommet_(nb_sm), arrets_(arrets), nbArrets_(nb_arr) {}
 
+
+void Graph::setnbSommets(){
+    nbSommet_ = nbSommet_ +1;
+}
 /* Initialisation de chaque sommet */
 void initSommets(Sommet *s)
 {
@@ -133,7 +137,8 @@ int Graph::getSommePoids()
 void Graph::afficherSommets() const
 {
     for (int i = 0; i < nbSommet_; i++)
-        cout << sommets_[i]->getEtiquette() << endl;
+        cout << sommets_[i]->getEtiquette()<<" ";
+    cout << endl;
 }
 
 void Graph::afficherGraph() const
