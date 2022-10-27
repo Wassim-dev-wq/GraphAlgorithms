@@ -3,15 +3,15 @@
 #include <unistd.h>
 using namespace std;
 
-Sommet **createSommets(int n_sommet){
+Sommet **createSommets(int n_sommet)
+{
     Sommet **s = new Sommet *[n_sommet];
     for (int i = 0; i < n_sommet; i++)
     {
-        s[i] = new Sommet((char *)"0", 0, 0);         
+        s[i] = new Sommet((char *)"0", 0, 0);
     }
     return s;
 }
-
 
 Graph *createGraph()
 {
@@ -51,7 +51,7 @@ void outtro()
     cout << "Au revoir." << endl;
 }
 
-void Choice1(int nbGraph, Graph **g)
+void Choix1(int nbGraph, Graph **g)
 {
     cout << "Vous avez fait le choix 1.\n"
          << endl;
@@ -63,7 +63,7 @@ void Choice1(int nbGraph, Graph **g)
     }
 }
 
-Graph *Choice2()
+Graph *Choix2()
 {
     cout << "Vous avez fait le choix 2." << endl;
     cout << "Création du graph..." << endl;
@@ -74,20 +74,20 @@ Graph *Choice2()
     return graph;
 }
 
-void Choice3()
+void Choix3()
 {
     cout << "Vous avez fait le choix 3." << endl;
 }
-void Choice4()
+void Choix4()
 {
     cout << "Vous avez fait le choix 4." << endl;
 }
-void Choice5()
+void Choix5()
 {
     cout << "Vous avez fait le choix 5." << endl;
 }
 
-void Choice6()
+void Choix6()
 {
     cout << "Vous avez fait le choix 6." << endl;
 }
@@ -97,21 +97,21 @@ int main()
     /*EXAMPLE*/
     Graph **graph = new Graph *[4];
     Sommet **s;
-    char choice = '?';
+    char choix = '?';
     int nbGraph_ = 0;
     cout << "Bonjour." << endl;
     do
     {
         intro();
-        cin >> choice;
-        switch (choice)
+        cin >> choix;
+        switch (choix)
         {
         case '1':
-            Choice1(nbGraph_, graph);
+            Choix1(nbGraph_, graph);
             cout << "1 : Choix 1. Plus de détail sur un graph ? Entrer le numéro du graphe" << endl;
             cout << "2 : Revenir au menu." << endl;
-            cin >> choice;
-            switch (choice)
+            cin >> choix;
+            switch (choix)
             {
             case '1':
                 cout << "1 : Choix 1. " << endl;
@@ -121,68 +121,72 @@ int main()
             }
             break;
         case '2':
-            graph[nbGraph_] = Choice2();
+            graph[nbGraph_] = Choix2();
             nbGraph_++;
             cout << "1 : Choix 1. Ajouter sommet au graph" << endl;
             cout << "2 : Choix 2. Ajouter des arretes" << endl;
             cout << "3 : Revenir au menu." << endl;
-            cin >> choice;
-            switch (choice)
+            cin >> choix;
+            switch (choix)
             {
             case '1':
                 cout << "1. Ceer les sommets automatiquement " << endl;
                 cout << "2. Creer les sommets manuel " << endl;
-                cin >> choice;
-                if(choice == '1'){
+                cin >> choix;
+                if (choix == '1')
+                {
                     cout << "Attention!! les sommets vont être numérotés automatiquemen"
-                    << "vous ne pouvez pas spécifier l'étiquette du sommet ! "
-                    << "Voulez-vous continuer la création [y/n] ?"<< endl;
-                    cin >> choice ;
-                    if(choice == 'y'){
+                         << "vous ne pouvez pas spécifier l'étiquette du sommet ! "
+                         << "Voulez-vous continuer la création [y/n] ?" << endl;
+                    cin >> choix;
+                    if (choix == 'y')
+                    {
                         int nbS = 0;
                         cout << " Entrer le nombre de sommet que vous voulez créer : ";
                         cin >> nbS;
-
+                    }
+                    }
+                    break;
+                case '2':
+                    cout << "2\n\n";
+                    break;
+                case '3':
+                    break;
                 }
                 break;
-            case '2':
-                cout << "2\n\n";
-                break;
+
             case '3':
+                Choix3();
+                break;
+
+            case '4':
+                Choix4();
+                break;
+
+            case '5':
+                Choix5();
+                break;
+
+            case '6':
+                Choix6();
+                break;
+
+            case '0':
+                break;
+
+            default:
+                cerr << "Quoi ?" << endl;
                 break;
             }
-            break;
-
-        case '3':
-            Choice3();
-            break;
-
-        case '4':
-            Choice4();
-            break;
-
-        case '5':
-            Choice5();
-            break;
-
-        case '6':
-            Choice6();
-            break;
-
-        case '0':
-            break;
-
-        default:
-            cerr << "Quoi ?" << endl;
-            break;
         }
-    } while (choice != '0');
-    outtro();
-    // cout << "Avant Kruskal";
-    // graph->afficherGraph();
-    // Graph *graphKruskal = graph->kruskal();
-    // cout << "\nApres Krusal";
-    // graphKruskal->afficherGraph();
+        while (choix != '0')
+            ;
+        outtro();
+        // cout << "Avant Kruskal";
+        // graph->afficherGraph();
+        // Graph *graphKruskal = graph->kruskal();
+        // cout << "\nApres Krusal";
+        // graphKruskal->afficherGraph();
 
-    return 0;
-}
+        return 0;
+    }
