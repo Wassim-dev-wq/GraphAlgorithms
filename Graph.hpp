@@ -12,12 +12,26 @@ private:
     int nbArrets_;     /* Nombre des arretes */
 public:
     Graph(Sommet **sommets, int nbSommet, Arete **arrets, int nbArrets);
+    Graph(const Graph&);
+    Graph(Graph *g);
     Graph* kruskal();
     void afficherSommets() const;
+    void ajoute_sommet(string s);
+    void ajoute_sommet(Sommet *s);
+
+    void ajoute_arete(Arete* a);
+    void ajoute_arete(Sommet *premier,Sommet* deuxieme, int poids);
+    void ajoute_arete(string premier,string deuxieme, int poids);
+
+    void symetrise();
+
+    int getNbSommet() const;
+    int getNbArete() const;
+    Sommet** getSommets() const;
+    Arete** getAretes() const;
+    friend ostream &operator<<(ostream& out, const Graph &p);
     int getSommePoids();
-    void afficherGraph() const;
-    void setnbSommets();
-    ~Graph();
+    virtual ~Graph();
 
 };
 

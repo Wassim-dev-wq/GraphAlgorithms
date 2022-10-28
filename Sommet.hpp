@@ -5,15 +5,16 @@ using namespace std;
 
 class Sommet
 {   
-    char* etiquette_; /* etiquette du sommet */
+    string etiquette_; /* etiquette du sommet */
 
 public:   
     Sommet* parent_;
     int rang_;        
-    Sommet(char* const etiquette,Sommet* parent = 0,int rang = 0); /* Sommet avec une étiquette */
-    Sommet(const Sommet&); /* Sommet à partir d'un autre sommet (copie) */
+    Sommet(string etiquette,Sommet* parent = 0,int rang = 0); /* Sommet avec une étiquette */
+    Sommet(const Sommet* s);
+    Sommet(const Sommet&); /* Sommet(copie) */
     virtual ~Sommet();
-    char* getEtiquette() const;
+    string getEtiquette() const;
     void setEtiquette(char* val);
     friend ostream &operator<<(ostream& out, const Sommet &x);
 };

@@ -7,12 +7,12 @@ Arete::Arete(Sommet* premier,int poids,Sommet* deuxieme):
 premier_(premier),poids_(poids),deuxieme_(deuxieme){}
 
 /* Creation des sommets au moment du création de l'arrete */
-Arete::Arete(char* premier,int poids,char* deuxieme):
+Arete::Arete(string premier,int poids,string deuxieme):
 premier_(new Sommet{premier,0,0}),poids_(poids),deuxieme_(new Sommet{deuxieme,0,0}){}
 
-Arete::Arete(Arete& a){
-    *this = a;
-}
+Arete::Arete(Arete &a){}
+
+Arete::Arete(Arete *a) : premier_(a->getPremier()),poids_(a->getPoids()),deuxieme_(a->getDeuxieme()){ }
 
 Sommet* Arete::getPremier() const {
     return premier_;

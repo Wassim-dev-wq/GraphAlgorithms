@@ -2,15 +2,16 @@
 #include<iostream>
 using namespace std;
 
-Sommet::Sommet(char* const etiquette,Sommet* parent, int rang):
+Sommet::Sommet(string etiquette,Sommet* parent, int rang):
 etiquette_(etiquette),parent_(parent),rang_(rang){}
 
-Sommet::Sommet(const Sommet& l){
-    *this = l;
-}
-Sommet::~Sommet(){}
+Sommet::Sommet(const Sommet* s): etiquette_{s->getEtiquette()}, parent_{s->parent_} {}
 
-char* Sommet::getEtiquette() const{
+Sommet::Sommet(const Sommet& l){}
+Sommet::~Sommet(){
+}
+
+string Sommet::getEtiquette() const{
     return etiquette_;
 }
 
