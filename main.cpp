@@ -117,8 +117,11 @@ Graph *createSommetArrete()
                             cout << "\nLes sommets du graph : ";
                             afficherSommets(s, nbS);
                             cout << "\nCreation de l'arret " << i << " : En cours ..." << endl;
-                            cout << "Entrer le premier sommet de l'arret :  ";
+                            cout << "Entrer le premier sommet de l'arret [TAPEZ -1 POUR ANNULEZ]:  ";
                             cin >> s1;
+                            if( s1 == "-1"){
+                                break;
+                            }
                             while (checkSommet(s, s1, nbS) == false)
                             {
                                 cout << "Le sommet " << s1 << " n'éxiste pas en graph, voulez-vous l'ajouter au graph [y/n] ?  ";
@@ -148,9 +151,28 @@ Graph *createSommetArrete()
                             cin >> s2;
                             while (checkSommet(s, s2, nbS) == false)
                             {
-                                cout << "\nLe sommet " << s2 << " n'éxiste pas en graph, veuillez entrer une sommet valide "
-                                                                "[Tapez -1 si vous voulez quitter] :  ";
-                                cin >> s2;
+                                cout << "Le sommet " << s2 << " n'éxiste pas en graph, voulez-vous l'ajouter au graph [y/n] ?  ";
+                                cin >> choix;
+                                if (choix == 'y')
+                                {
+                                    s[nbS] = new Sommet(s2, 0, 0);
+                                    nbS++;
+                                    cout << "Le sommet " << s2 << " a était créer avec succées " << endl;
+                                    break;
+                                }
+                                else if (choix == 'n')
+                                {
+                                    cout << "Veuillez entrer un sommet valide : ";
+                                    cin >> s2;
+                                }
+                                else
+                                {
+                                    while (choix != 'y' || choix != 'n' || choix != '-1')
+                                    {
+                                        cout << choix << " n'est pas parmie les choix, Entrer un choix valide [Tapez -1 pour sortir] :  ";
+                                        cin >> choix;
+                                    }
+                                }
                             }
                             while (s1 == s2)
                             {
@@ -186,8 +208,11 @@ Graph *createSommetArrete()
                             cout << "\nLes sommets du graph : ";
                             afficherSommets(s, nbS);
                             cout << "\nCreation de l'arret " << i << " : En cours ..." << endl;
-                            cout << "Entrer le premier sommet de l'arret :  ";
+                            cout << "Entrer le premier sommet de l'arret [TAPEZ -1 POUR ANNULER] :  ";
                             cin >> s1;
+                            if (s1 == "-1"){
+                                break;
+                            }
                             while (checkSommet(s, s1, nbS) == false)
                             {
                                 cout << "Le sommet " << s1 << " n'éxiste pas en graph, voulez-vous l'ajouter au graph [y/n] ?  ";
@@ -369,8 +394,11 @@ Graph *createSommetArrete()
                 cout << "\nLes sommets du graph : ";
                 afficherSommets(s, nbS);
                 cout << "\nCreation de l'arret " << i << " : En cours ..." << endl;
-                cout << "Entrer le premier sommet de l'arret :  ";
+                cout << "Entrer le premier sommet de l'arret [TAPEZ -1 POUR ANNULER] :  ";
                 cin >> s1;
+                if(s1 == "-1"){
+                    break;
+                }
                 while (checkSommet(s, s1, nbS) == false)
                 {
                     cout << "Le sommet " << s1 << " n'éxiste pas en graph, voulez-vous l'ajouter au graph [y/n] ?  ";
@@ -455,8 +483,11 @@ Graph *createSommetArrete()
                 cout << "\nLes sommets du graph : ";
                 afficherSommets(s, nbS);
                 cout << "\nCreation de l'arret " << i << " : En cours ..." << endl;
-                cout << "Entrer le premier sommet de l'arret :  ";
+                cout << "Entrer le premier sommet de l'arret [TAPEZ -1 POUR ANNULER] :  ";
                 cin >> s1;
+                if(s1 == "-1"){
+                    break;
+                }
                 while (checkSommet(s, s1, nbS) == false)
                 {
                     cout << "Le sommet " << s1 << " n'éxiste pas en graph, voulez-vous l'ajouter au graph [y/n] ?  ";
@@ -610,6 +641,251 @@ void Choix6()
     cout << "Vous avez fait le choix 6." << endl;
 }
 
+void ajouterSommet(Graph *g, Sommet **s)
+{
+    int choix;
+    int i = 0;
+    string etiqu_sommet;
+    cout << "Entrer le nombre de sommet que vous voulez ajouter [TAPEZ 0 SI VOUS SAVEZ PAS] : ";
+    cin >> choix;
+    if (choix != 0)
+    {
+        while (i < choix)
+        {
+            cout << "Entrer l'étiquette du sommet " << i << " : ";
+            cin >> etiqu_sommet;
+            while (g->checkSommet(etiqu_sommet))
+            {
+                cout << "L'étiquette " << etiqu_sommet << " est déja pris par un autre sommet, veuillez entrer une autre étiquette: "
+                                                          "[TAPEZ -1 POUR ANNULER] : ";
+                cin >> etiqu_sommet;
+            }
+            if (etiqu_sommet == "-1")
+            {
+                break;
+            }
+            g->ajoute_sommet(etiqu_sommet);
+            cout << "Le sommet " << etiqu_sommet << " a était créer avec succées " << endl;
+            i++;
+        }
+    }
+    else if (choix == 0)
+    {
+        char choixSom = 'c';
+        do
+        {
+            cout << "Entrer l'étiquette du sommet " << i << " : ";
+            cin >> etiqu_sommet;
+            while (g->checkSommet(etiqu_sommet))
+            {
+                cout << "L'étiquette " << etiqu_sommet << " est déja pris par un autre sommet, veuillez entrer une autre étiquette: "
+                                                          "[TAPEZ -1 POUR ANNULER] : ";
+                cin >> etiqu_sommet;
+            }
+            if (etiqu_sommet == "-1")
+            {
+                break;
+            }
+            g->ajoute_sommet(etiqu_sommet);
+            cout << "Sommet " << etiqu_sommet << " est créer avec succées.\n"
+                 << endl;
+            cout << "Voulez-vous ajouter un autre sommet [y/n] ?  : ";
+            cin >> choixSom;
+            i++;
+        } while (choixSom == 'y');
+    }
+    else
+    {
+        cout << choix << "n'est pas parmie les choix, veuillez entrer un choix valide : ";
+        cin >> choix;
+    }
+}
+
+void ajouterArrete(Graph *g)
+{
+    int nbArrets;
+    char choix = '?';
+    cout << "Entrer le nombre d'arrets que vous souhaitez-créer"
+            "[Entrer 0 si vous ne savez pas le nombre] :  ";
+    cin >> nbArrets;
+    if (nbArrets != 0)
+    {
+        int i = 0;
+        while (i < nbArrets)
+        {
+            string s1;
+            string s2;
+            int poids;
+            cout << "\nLes sommets du graph : ";
+            g->afficherSommets();
+            cout << "\nCreation de l'arret " << i << " : En cours ..." << endl;
+            cout << "Entrer le premier sommet de l'arret [TAPEZ -1 POUR ANNULER] :  ";
+            cin >> s1;
+            if(s1 == "-1"){
+                break;
+            }
+            while (checkSommet(g->getSommets(), s1, g->getNbSommet()) == false)
+            {
+                cout << "Le sommet " << s1 << " n'éxiste pas en graph, voulez-vous l'ajouter au graph [y/n] ?  ";
+                cin >> choix;
+                if (choix == 'y')
+                {
+                    g->ajoute_sommet(s1);
+                    cout << "Le sommet " << s1 << " a était créer avec succées " << endl;
+                    break;
+                }
+                else if (choix == 'n')
+                {
+                    cout << "Veuillez entrer un sommet valide : ";
+                    cin >> s1;
+                }
+                else
+                {
+                    while (choix != 'y' || choix != 'n' || choix != '-1')
+                    {
+                        cout << choix << " n'est pas parmie les choix, Entrer un choix valide [Tapez -1 pour sortir] :  ";
+                        cin >> choix;
+                    }
+                }
+            }
+            cout << "\nEntrer le deuxieme sommet de l'arret :  ";
+            cin >> s2;
+            while (checkSommet(g->getSommets(), s2, g->getNbSommet()) == false)
+            {
+                cout << "Le sommet " << s2 << " n'éxiste pas en graph, voulez-vous l'ajouter au graph [y/n] ?  ";
+                cin >> choix;
+                if (choix == 'y')
+                {
+                    g->ajoute_sommet(s2);
+                    cout << "Le sommet " << s2 << " a était créer avec succées " << endl;
+                    break;
+                }
+                else if (choix == 'n')
+                {
+                    cout << "Veuillez entrer un sommet valide : ";
+                    cin >> s2;
+                }
+                else
+                {
+                    while (choix != 'y' || choix != 'n' || choix != '-1')
+                    {
+                        cout << choix << " n'est pas parmie les choix, Entrer un choix valide [Tapez -1 pour sortir] :  ";
+                        cin >> choix;
+                    }
+                }
+            }
+            while (s1 == s2)
+            {
+                cout << "\nVous avez entrer le meme sommet!! Veuillez entrer un sommet different \n"
+                        "Entre le deuxieme sommet [Tapez -1 pour sortir] : ";
+                cin >> s2;
+                while (checkSommet(g->getSommets(), s2, g->getNbSommet()) == false)
+                {
+                    cout << "Le sommet " << s2 << " n'éxiste pas en graph, veuillez entrer une sommet valide "
+                                                  "[Tapez -1 si vous voulez quitter] :  ";
+                    cin >> s2;
+                }
+            }
+            cout << "\nEntrer Poids de l'arret (Sommet1: " << s1 << ", Sommet2: " << s2 << " Poids: ";
+            cin >> poids;
+            g->ajoute_arete(s1, s2, poids);
+            cout << "\nL'arret (" << s1 << "," << poids << ", " << s2 << ") est créer avec succés..\n"
+                 << endl;
+            i++;
+        }
+    }
+    else if (nbArrets == 0)
+    {
+        int i = 0;
+        char addArr = 'y';
+        cout << "NOMBRE ARRET " << g->getNbSommet();
+        while (addArr == 'y')
+        {
+            string s1;
+            string s2;
+            int poids;
+            cout << "\nLes sommets du graph : ";
+            g->afficherSommets();
+            cout << "\nCreation de l'arret " << i << " : En cours ..." << endl;
+            cout << "Entrer le premier sommet de l'arret [TAPEZ -1 POUR ANNULER] :  ";
+            if(s1 == "-1")
+                break;
+            cin >> s1;
+            while (checkSommet(g->getSommets(), s1, g->getNbSommet()) == false)
+            {
+                cout << "Le sommet " << s1 << " n'éxiste pas en graph, voulez-vous l'ajouter au graph [y/n] ?  ";
+                cin >> choix;
+                if (choix == 'y')
+                {
+                    g->ajoute_sommet(s1);
+                    cout << "Le sommet " << s1 << " a était créer avec succées " << endl;
+                    break;
+                }
+                else if (choix == 'n')
+                {
+                    cout << "Veuillez entrer un sommet valide : ";
+                    cin >> s1;
+                }
+                else
+                {
+                    while (choix != 'y' || choix != 'n' || choix != '-1')
+                    {
+                        cout << choix << " n'est pas parmie les choix, Entrer un choix valide [Tapez -1 pour sortir] :  ";
+                        cin >> choix;
+                    }
+                }
+            }
+            cout << "\nEntrer le deuxieme sommet de l'arret :  ";
+            cin >> s2;
+            while (checkSommet(g->getSommets(), s2, g->getNbSommet()) == false)
+            {
+                cout << "Le sommet " << s2 << " n'éxiste pas en graph, voulez-vous l'ajouter au graph [y/n] ?  ";
+                cin >> choix;
+                if (choix == 'y')
+                {
+                    g->ajoute_sommet(s2);
+                    cout << "Le sommet " << s2 << " a était créer avec succées " << endl;
+                    break;
+                }
+                else if (choix == 'n')
+                {
+                    cout << "Veuillez entrer un sommet valide : ";
+                    cin >> s2;
+                }
+                else
+                {
+                    while (choix != 'y' || choix != 'n' || choix != '-1')
+                    {
+                        cout << choix << " n'est pas parmie les choix, Entrer un choix valide [Tapez -1 pour sortir] :  ";
+                        cin >> choix;
+                    }
+                }
+            }
+            while (s1 == s2)
+            {
+                cout << "\nVous avez entrer le meme sommet!! Veuillez entrer un sommet different \n"
+                        "Entre le deuxieme sommet [Tapez -1 pour sortir] : ";
+                cin >> s2;
+                while (checkSommet(g->getSommets(), s2, g->getNbSommet()) == false)
+                {
+                    cout << "Le sommet " << s2 << " n'éxiste pas en graph, veuillez entrer une sommet valide "
+                                                  "[Tapez -1 si vous voulez quitter] :  ";
+                    cin >> s2;
+                }
+            }
+            cout << "\nEntrer Poids de l'arret (Sommet1: " << s1 << ", Sommet2: " << s2 << " Poids: ";
+            cin >> poids;
+            g->ajoute_arete(s1, s2, poids);
+            // aretes[0] = new Arete(s[0], 9, s[1]);  /* Arete(Sommet_1, Poids, Sommet_2) */
+            cout << "\nL'arret (" << s1 << "," << poids << ", " << s2 << ") est créer avec succés..\n"
+                 << endl;
+            i++;
+            cout << "Voulez-vous ajouter un autre arrets [y/n] ? : ";
+            cin >> addArr;
+        }
+    }
+}
+
 int main()
 {
     /*EXAMPLE*/
@@ -642,7 +918,7 @@ int main()
                 break;
             }
             Choix1(nbGraph_, graph);
-            cout << "1 : Choix 1. Plus de détail sur un graph ? [MARCHE PAS]" << endl;
+            cout << "\n1 : Choix 1. Plus de détail sur un graph ? [MARCHE PAS]" << endl;
             cout << "2 : Revenir au menu." << endl;
             cin >> choix;
             if (choix == '1')
@@ -665,29 +941,27 @@ int main()
                     else
                     {
                         cout << "\n*******  DETAILS GRAPH " << numGraph << "  *******" << endl;
-                        cout << "Nombre des sommets : " << graph[numGraph]->getNbSommet();
+                        cout << "- Nombre des sommets : " << graph[numGraph]->getNbSommet();
                         graph[numGraph]->afficherGraph();
-                        cout << "La somme des poids des arretes : " << graph[numGraph]->getSommePoids() << endl;
-                        cout << "1.Modifier sur le graph[MARCHE PAS]" << endl;
+                        cout << "- La somme des poids des arretes : " << graph[numGraph]->getSommePoids() << endl;
+                        cout << "\n1.Modifier sur le graph" << endl;
                         cout << "2.Appliquer kruskal au graph" << endl;
                         cout << "3.Revenir au menu" << endl;
                         cin >> choix;
                         if (choix == '1')
                         {
-                            cout << "1.Ajouter sommet" << endl;
-                            cout << "2.Ajouter arret" << endl;
-                            cout << "3.Revenir au menu" << endl;
-                            cin >> choix;
-                            do
-                            {
+                                cout << "1.Ajouter sommet" << endl;
+                                cout << "2.Ajouter arret" << endl;
+                                cout << "3.Revenir au menu" << endl;
+                                cin >> choix;
+
                                 if (choix == '1')
                                 {
-                                    cout << "AJOUTER SOMMET";
-                                    break;
+                                    ajouterSommet(graph[numGraph], s);
                                 }
                                 else if (choix == '2')
                                 {
-                                    cout << "AJOUTER ARRET";
+                                    ajouterArrete(graph[numGraph]);
                                     break;
                                 }
                                 else if (choix == '3')
@@ -699,7 +973,6 @@ int main()
                                     cout << choix << " n'est pas parmie les choix, veuillez entrer un choix valide : ";
                                     cin >> choix;
                                 }
-                            } while (choix != '1' || choix != '2' || choix != '3');
                         }
                         else if (choix == '2')
                         {
@@ -716,7 +989,7 @@ int main()
                         }
                         else
                         {
-                            cout << choix << "n'est pas parmie les choix, veuillez entrer un choix valide";
+                            cout << choix << "n'est pas parmie les choix, veuillez entrer un choix valide : ";
                         }
                         break;
                     }
@@ -737,7 +1010,7 @@ int main()
             else if (nbGraph_ > 0)
             {
                 Choix1(nbGraph_, graph);
-                cout << "LE RESTE PAS ENCORE IMPLEMENTER [ C'EST LE MEME MODIFIER DU LISTER LES GRAPHES ]"<<endl;
+                cout << "LE RESTE PAS ENCORE IMPLEMENTER [ C'EST LE MEME MODIFIER DU LISTER LES GRAPHES ]" << endl;
             }
             break;
 

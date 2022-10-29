@@ -17,6 +17,7 @@ public:
     Graph* kruskal();
     void afficherSommets() const;
     void afficherGraph() const;
+    bool checkSommet(string s);
     void trieArrets();
     void ajoute_sommet(string s);
     void ajoute_sommet(Sommet *s);

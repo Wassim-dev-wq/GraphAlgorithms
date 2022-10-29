@@ -45,7 +45,7 @@ void Union(Sommet *s1, Sommet *s2)
 }
 
 /* Insertion sort */
-void Graph::trieArrets() 
+void Graph::trieArrets()
 {
     int i, j;
     Arete *ei;
@@ -61,7 +61,6 @@ void Graph::trieArrets()
         arrets_[j + 1] = ei;
     }
 }
-
 
 Graph *Graph::kruskal()
 {
@@ -107,8 +106,8 @@ Graph::~Graph()
 
 void Graph::ajoute_sommet(string s)
 {
-    Sommet *tmp = new Sommet{s};
-    this->ajoute_sommet(tmp);
+    sommets_[nbSommet_] = new Sommet(s, 0, 0);
+    nbSommet_++;
 }
 
 void Graph::ajoute_sommet(Sommet *s)
@@ -122,6 +121,15 @@ void Graph::ajoute_sommet(Sommet *s)
     }
     sommets_[nbSommet_] = s;
     nbSommet_++;
+}
+bool Graph::checkSommet(string s_etiquette)
+{
+    for (int i = 0; i < nbSommet_; i++)
+    {
+        if (sommets_[i]->getEtiquette() == s_etiquette)
+            return true;
+    }
+    return false;
 }
 
 void Graph::ajoute_arete(Arete *a)
@@ -145,9 +153,8 @@ void Graph::ajoute_arete(Sommet *premier, Sommet *deuxieme, int poids)
 }
 void Graph::ajoute_arete(string premier, string deuxieme, int poids)
 {
-    Sommet *tmp1 = new Sommet{premier};
-    Sommet *tmp2 = new Sommet{deuxieme};
-    this->ajoute_arete(tmp1, tmp2, poids);
+    arrets_[nbArrets_] = new Arete(premier, poids, deuxieme);
+    nbArrets_++;
 }
 
 void Graph::symetrise()
@@ -169,11 +176,11 @@ void Graph::afficherSommets() const
 
 void Graph::afficherGraph() const
 {
-    cout << "\nLes sommets : ";
+    cout << "\n- Les sommets : ";
     for (int i = 0; i < nbSommet_; i++)
         cout << sommets_[i]->getEtiquette() << " ";
 
-    cout << "\nNombre d'arrets : " << nbArrets_ << endl;
+    cout << "\n- Nombre d'arrets : " << nbArrets_ << endl;
     cout << "[ Sommet 1, Poids, Sommet 2 ]" << endl;
     for (int j = 0; j < nbArrets_; j++)
     {
