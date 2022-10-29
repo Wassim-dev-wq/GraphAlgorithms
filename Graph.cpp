@@ -157,14 +157,36 @@ void Graph::ajoute_arete(string premier, string deuxieme, int poids)
     nbArrets_++;
 }
 
+bool Graph::checkArret(Sommet *premier, Sommet *deuxieme, int poids,int count)
+{
+    for (int i = 0; i < count; i++)
+    {
+        if (premier == arrets_[i]->getPremier() && deuxieme == arrets_[i]->getDeuxieme() && poids == arrets_[i]->getPoids()){
+            return true;
+        }
+    }
+    return false;
+}
 void Graph::symetrise()
 {
+    Graph *G = new Graph(NULL, 0, NULL, 0);
+    Sommet **s = new Sommet *[nbSommet_];
+    Arete **arret = new Arete *();
     int count = nbArrets_;
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < count; i++)
     {
-        ajoute_arete(arrets_[i]->getDeuxieme(), arrets_[i]->getPremier(), arrets_[i]->getPoids());
+        
+        if ((checkArret(arrets_[i]->getDeuxieme(), arrets_[i]->getPremier(), arrets_[i]->getPoids(),count))==false){
+            ajoute_arete(arrets_[i]->getDeuxieme(), arrets_[i]->getPremier(), arrets_[i]->getPoids());
+            nbArrets_ ++;
+        }
     }
     cout << nbArrets_ << endl;
+    // G->arrets_ = arret;
+    // G->sommets_ = s;
+    // G->nbArrets_ = count;
+    // G->nbSommet_ = nbSommet_;
+    // return G;
 }
 
 void Graph::afficherSommets() const

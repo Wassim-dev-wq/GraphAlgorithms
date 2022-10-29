@@ -19,6 +19,7 @@ public:
     void afficherGraph() const;
     bool checkSommet(string s);
     void trieArrets();
+    bool checkArret(Sommet *premier,Sommet* deuxieme, int poids,int count);
     void ajoute_sommet(string s);
     void ajoute_sommet(Sommet *s);
 
