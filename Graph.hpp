@@ -18,13 +18,14 @@ public:
     void afficherSommets() const;
     void afficherGraph() const;
     bool checkSommet(string s);
+    Graph* newGraph();
     void trieArrets();
     bool checkArret(Sommet *premier,Sommet* deuxieme, int poids,int count);
     void ajoute_sommet(string s);
     void ajoute_sommet(Sommet *s);
 
-    void ajoute_arete(Arete* a);
-    void ajoute_arete(Sommet *premier,Sommet* deuxieme, int poids);
+    void ajoute_areteee(Arete* a);
+    void ajoute_aretee(Sommet *premier,Sommet* deuxieme, int poids);
     void ajoute_arete(string premier,string deuxieme, int poids);
 
     void symetrise();

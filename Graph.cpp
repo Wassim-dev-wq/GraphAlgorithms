@@ -132,7 +132,21 @@ bool Graph::checkSommet(string s_etiquette)
     return false;
 }
 
-void Graph::ajoute_arete(Arete *a)
+Graph *Graph::newGraph()
+{
+    Graph *G = new Graph(NULL, 0, NULL, 0);
+    Sommet **s = new Sommet *[nbSommet_];
+    Arete **arret = new Arete *();
+    for (int i = 0; i < nbSommet_; i++)
+    {
+        s[i] = new Sommet(sommets_[i]->getEtiquette(), 0, 0);
+    }
+    G->arrets_ = arret;
+    G->sommets_ = s;
+    G->nbSommet_ = nbSommet_;
+    return G;
+}
+void Graph::ajoute_areteee(Arete *a)
 {
     for (int i = 0; i < nbArrets_; i++)
     {
@@ -144,10 +158,10 @@ void Graph::ajoute_arete(Arete *a)
     arrets_[nbArrets_] = a;
     nbArrets_++;
 }
-void Graph::ajoute_arete(Sommet *premier, Sommet *deuxieme, int poids)
+void Graph::ajoute_aretee(Sommet *premier, Sommet *deuxieme, int poids)
 {
     Arete *tmp = new Arete{premier, poids, deuxieme};
-    this->ajoute_arete(tmp);
+    this->ajoute_areteee(tmp);
     this->ajoute_sommet(premier);
     this->ajoute_sommet(deuxieme);
 }
@@ -157,11 +171,12 @@ void Graph::ajoute_arete(string premier, string deuxieme, int poids)
     nbArrets_++;
 }
 
-bool Graph::checkArret(Sommet *premier, Sommet *deuxieme, int poids,int count)
+bool Graph::checkArret(Sommet *premier, Sommet *deuxieme, int poids, int count)
 {
     for (int i = 0; i < count; i++)
     {
-        if (premier == arrets_[i]->getPremier() && deuxieme == arrets_[i]->getDeuxieme() && poids == arrets_[i]->getPoids()){
+        if (premier == arrets_[i]->getPremier() && deuxieme == arrets_[i]->getDeuxieme() && poids == arrets_[i]->getPoids())
+        {
             return true;
         }
     }
@@ -169,28 +184,21 @@ bool Graph::checkArret(Sommet *premier, Sommet *deuxieme, int poids,int count)
 }
 void Graph::symetrise()
 {
-    Graph *G = new Graph(NULL, 0, NULL, 0);
-    Sommet **s = new Sommet *[nbSommet_];
-    Arete **arret = new Arete *();
     int count = nbArrets_;
+
     for (int i = 0; i < count; i++)
     {
-        
-        if ((checkArret(arrets_[i]->getDeuxieme(), arrets_[i]->getPremier(), arrets_[i]->getPoids(),count))==false){
-            ajoute_arete(arrets_[i]->getDeuxieme(), arrets_[i]->getPremier(), arrets_[i]->getPoids());
-            nbArrets_ ++;
-        }
+    //     cout << arrets_[i]->getPremier()->getEtiquette()<<endl;
+    //     cout << arrets_[i]->getDeuxieme()->getEtiquette()<<endl;
+    //     cout << arrets_[i]->getPoids()<<endl;
+        ajoute_arete(arrets_[i]->getDeuxieme()->getEtiquette(), arrets_[i]->getPremier()->getEtiquette(), arrets_[i]->getPoids());
     }
-    cout << nbArrets_ << endl;
-    // G->arrets_ = arret;
-    // G->sommets_ = s;
-    // G->nbArrets_ = count;
-    // G->nbSommet_ = nbSommet_;
-    // return G;
+
 }
 
 void Graph::afficherSommets() const
 {
+    cout << "NOMBRE SOMMET = " << nbSommet_ << endl;
     for (int i = 0; i < nbSommet_; i++)
         cout << sommets_[i]->getEtiquette() << " ";
     cout << endl;

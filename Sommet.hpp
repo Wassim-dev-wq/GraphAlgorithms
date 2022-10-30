@@ -11,11 +11,11 @@ public:
     Sommet* parent_;
     int rang_;        
     Sommet(string etiquette,Sommet* parent = 0,int rang = 0); /* Sommet avec une étiquette */
-    Sommet(const Sommet* s);
-    Sommet(const Sommet&); /* Sommet(copie) */
+    // Sommet(const Sommet* s);
+    // Sommet(const Sommet&); /* Sommet(copie) */
     virtual ~Sommet();
     string getEtiquette() const;
-    void setEtiquette(char* val);
+    void setEtiquette(string val);
     friend ostream &operator<<(ostream& out, const Sommet &x);
 };
 
