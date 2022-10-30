@@ -3,8 +3,9 @@
 #include <string.h>
 using namespace std;
 
-Graph::Graph(Sommet **sommets, int nb_sm, Arete **arrets, int nb_arr) : sommets_(sommets), nbSommet_(nb_sm), arrets_(arrets), nbArrets_(nb_arr) {}
+Graph::Graph(vector<Sommet *> sommets, int nb_sm, vector<Arete *> arrets, int nb_arr) : sommets_{sommets}, nbSommet_{nb_sm}, arrets_{arrets}, nbArrets_{nb_arr} {}
 Graph::Graph(Graph *g) : sommets_(g->getSommets()), nbSommet_(g->getNbSommet()), arrets_(g->getAretes()), nbArrets_(g->getNbArete()) {}
+Graph::Graph() : sommets_{vector<Sommet*>{}}, nbSommet_{0}, arrets_{vector<Arete*>{}}, nbArrets_{0} {}
 Graph::Graph(const Graph &g) {}
 
 /* Initialisation de chaque sommet */
@@ -64,67 +65,73 @@ void Graph::trieArrets()
 
 Graph *Graph::kruskal()
 {
-    Graph *G = new Graph(NULL, 0, NULL, 0);
-    Sommet **s = new Sommet *[nbSommet_];
-    Arete **arret = new Arete *[nbArrets_];
-    int nbArrets_kruskal = 0;
+    Graph *G = new Graph();
+    vector<Sommet *> s{};
+    vector<Arete *> arret{};
     /* Init les parents de tous les sommets */
-    for (int i = 0; i < nbSommet_; i++)
+    for (int i = 0; i < getNbSommet(); i++){
         initSommets(sommets_[i]);
+    }
     trieArrets(); /*trier les arêtes de G par poids croissant*/
-    for (int i = 0; i < nbArrets_; ++i)
+    for (int i = 0; i < getNbArete(); ++i)
     {
         if (find(arrets_[i]->getPremier()) != find(arrets_[i]->getDeuxieme()))
         {
-            arret[nbArrets_kruskal] = arrets_[i];
-            nbArrets_kruskal++;
+            arret.push_back(arrets_[i]);
             Union(arrets_[i]->getPremier(), arrets_[i]->getDeuxieme());
         }
     }
-    for (int i = 0; i < nbSommet_; ++i)
-        s[i] = new Sommet(to_string(i), 0, 0); /* creation des sommets a partir de les autres sommets*/
+    for (int i = 0; i < getNbSommet(); ++i){
+        s.push_back(new Sommet(to_string(i), 0, 0));/* creation des sommets a partir de les autres sommets*/
+    }
     G->arrets_ = arret;
     G->sommets_ = s;
-    G->nbArrets_ = nbArrets_kruskal;
-    G->nbSommet_ = nbSommet_;
+    G->nbArrets_ = arret.size();
+    G->nbSommet_ = s.size();
     return G;
 }
 
 int Graph::getSommePoids()
 {
     int poids = 0;
-    for (int i = 0; i < nbArrets_; i++)
+    for (int i = 0; i < getNbArete(); i++)
         poids = poids + arrets_[i]->getPoids();
     return poids;
 }
 
 Graph::~Graph()
 {
-    delete[] sommets_;
-    delete[] arrets_;
+    for (int i = 0; i < getNbSommet(); i++)
+    {
+        delete sommets_[i];
+    }
+    for (int i = 0; i < getNbArete(); i++)
+    {
+        delete arrets_[i];
+    }
 }
 
 void Graph::ajoute_sommet(string s)
 {
-    sommets_[nbSommet_] = new Sommet(s, 0, 0);
-    nbSommet_++;
+    sommets_.push_back(new Sommet(s, 0, 0));
+    nbSommet_ = sommets_.size();
 }
 
 void Graph::ajoute_sommet(Sommet *s)
 {
-    for (int i = 0; i < nbSommet_; i++)
+    for (int i = 0; i < getNbSommet(); i++)
     {
         if (sommets_[i] == s)
         {
             return;
         }
     }
-    sommets_[nbSommet_] = s;
-    nbSommet_++;
+    sommets_.push_back(s);
+    nbSommet_ = sommets_.size();
 }
 bool Graph::checkSommet(string s_etiquette)
 {
-    for (int i = 0; i < nbSommet_; i++)
+    for (int i = 0; i < getNbSommet(); i++)
     {
         if (sommets_[i]->getEtiquette() == s_etiquette)
             return true;
@@ -134,41 +141,44 @@ bool Graph::checkSommet(string s_etiquette)
 
 Graph *Graph::newGraph()
 {
-    Graph *G = new Graph(NULL, 0, NULL, 0);
-    Sommet **s = new Sommet *[nbSommet_];
-    Arete **arret = new Arete *();
-    for (int i = 0; i < nbSommet_; i++)
+    Graph *G = new Graph();
+    vector<Sommet *> s{};
+    vector<Arete *>arret{};
+    
+    for (int i = 0; i < getNbSommet(); i++)
     {
-        s[i] = new Sommet(sommets_[i]->getEtiquette(), 0, 0);
+        s.push_back(new Sommet(sommets_[i]->getEtiquette(), 0, 0));
     }
     G->arrets_ = arret;
     G->sommets_ = s;
-    G->nbSommet_ = nbSommet_;
+    G->nbSommet_ = s.size();
+    G->nbArrets_ = arret.size();
     return G;
 }
-void Graph::ajoute_areteee(Arete *a)
+
+void Graph::ajoute_arete(Arete *a)
 {
-    for (int i = 0; i < nbArrets_; i++)
+    for (int i = 0; i < getNbArete(); i++)
     {
-        if (arrets_[i] == a)
+        if (checkArret(a->getPremier(),a->getDeuxieme(), a->getPoids(),getNbArete()))
         {
             return;
         }
     }
-    arrets_[nbArrets_] = a;
-    nbArrets_++;
+    arrets_.push_back(a);
+    this->ajoute_sommet(a->getPremier());
+    this->ajoute_sommet(a->getDeuxieme());
+    nbArrets_ = arrets_.size();
 }
-void Graph::ajoute_aretee(Sommet *premier, Sommet *deuxieme, int poids)
+void Graph::ajoute_arete(Sommet *premier, Sommet *deuxieme, int poids)
 {
     Arete *tmp = new Arete{premier, poids, deuxieme};
-    this->ajoute_areteee(tmp);
-    this->ajoute_sommet(premier);
-    this->ajoute_sommet(deuxieme);
+    this->ajoute_arete(tmp);
 }
 void Graph::ajoute_arete(string premier, string deuxieme, int poids)
 {
-    arrets_[nbArrets_] = new Arete(premier, poids, deuxieme);
-    nbArrets_++;
+    arrets_.push_back(new Arete(premier, poids, deuxieme));
+    nbArrets_ = arrets_.size();
 }
 
 bool Graph::checkArret(Sommet *premier, Sommet *deuxieme, int poids, int count)
@@ -184,22 +194,18 @@ bool Graph::checkArret(Sommet *premier, Sommet *deuxieme, int poids, int count)
 }
 void Graph::symetrise()
 {
-    int count = nbArrets_;
+    int count = getNbArete();
 
     for (int i = 0; i < count; i++)
     {
-    //     cout << arrets_[i]->getPremier()->getEtiquette()<<endl;
-    //     cout << arrets_[i]->getDeuxieme()->getEtiquette()<<endl;
-    //     cout << arrets_[i]->getPoids()<<endl;
         ajoute_arete(arrets_[i]->getDeuxieme()->getEtiquette(), arrets_[i]->getPremier()->getEtiquette(), arrets_[i]->getPoids());
     }
-
 }
 
 void Graph::afficherSommets() const
 {
-    cout << "NOMBRE SOMMET = " << nbSommet_ << endl;
-    for (int i = 0; i < nbSommet_; i++)
+    cout << "NOMBRE SOMMET = " << getNbSommet() << endl;
+    for (int i = 0; i < getNbSommet(); i++)
         cout << sommets_[i]->getEtiquette() << " ";
     cout << endl;
 }
@@ -207,35 +213,36 @@ void Graph::afficherSommets() const
 void Graph::afficherGraph() const
 {
     cout << "\n- Les sommets : ";
-    for (int i = 0; i < nbSommet_; i++)
+    for (int i = 0; i < getNbSommet(); i++)
         cout << sommets_[i]->getEtiquette() << " ";
 
-    cout << "\n- Nombre d'arrets : " << nbArrets_ << endl;
+    cout << "\n- Nombre d'arrets : " << getNbArete() << endl;
     cout << "[ Sommet 1, Poids, Sommet 2 ]" << endl;
-    for (int j = 0; j < nbArrets_; j++)
+    for (int j = 0; j < getNbArete(); j++)
     {
         cout << "    " << (arrets_[j])->getPremier()->getEtiquette() << ",      ";
         cout << (arrets_[j])->getPoids() << ",       ";
         cout << (arrets_[j])->getDeuxieme()->getEtiquette() << "" << endl;
     }
+
 }
 
 int Graph::getNbSommet() const
 {
-    return nbSommet_;
+    return sommets_.size();
 }
 
 int Graph::getNbArete() const
 {
-    return nbArrets_;
+    return arrets_.size();
 }
 
-Sommet **Graph::getSommets() const
+vector<Sommet *> Graph::getSommets() const
 {
     return sommets_;
 }
 
-Arete **Graph::getAretes() const
+vector<Arete *> Graph::getAretes() const
 {
     return arrets_;
 }
@@ -243,8 +250,8 @@ Arete **Graph::getAretes() const
 ostream &operator<<(ostream &out, const Graph &p)
 {
     int i;
-    Sommet **sommets = p.getSommets();
-    Arete **aretes = p.getAretes();
+    vector<Sommet *> sommets = p.getSommets();
+    vector<Arete *> aretes = p.getAretes();
     out << "Sommet : ";
 
     for (i = 0; i < p.getNbSommet() - 1; i++)
